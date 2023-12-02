@@ -1,0 +1,48 @@
+﻿@page "/categories"
+
+@inject AppDbContext _context
+
+<PageTitle>Categories</PageTitle>
+
+<h1>Categories</h1>
+
+<a href="categories/create" class="btn btn-primary">
+    <i class="oi oi-plus"></i>
+    NEW
+</a>
+
+<table class="table">
+    <thead class="justify-content-center">
+        <tr>
+            <td>#</td>
+            <td>Title</td>
+            <td>Actions</td>
+        </tr>
+    </thead>
+    <tbody class="justify-content-center">
+        @foreach (var category in _categories)
+        {
+            <tr>
+                <td>@category.Id</td>
+                <td>@category.Title</td>
+                <td>
+                    <a href="/categories/edit/@category.Id">
+                        <i class="oi oi-pencil text-black"></i>
+                    </a>
+                    <a href="/categories/delete/@category.Id">
+                        <i class="oi oi-delete text-danger"></i>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    List<Category> _categories = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _categories = await _context.Categories.AsNoTracking().ToListAsync();
+    }
+}
